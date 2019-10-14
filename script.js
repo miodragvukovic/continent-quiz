@@ -13,7 +13,7 @@ let pointsGained = 750;
 let clicked = false;
 let answers = document.querySelector('.answers');
 let url = "https://api.myjson.com/bins/a6da9";
-let next = document.querySelector('#request-next-question');
+let next = document.querySelector('#next');
 const request = new XMLHttpRequest();
 
 document.querySelector('.max-questions').innerHTML = maxQuestions;
@@ -49,7 +49,7 @@ function requestQuestion() {
 
 			correctAnswer = randomize(numOfQuestions);
 			let correctAnswerImage = numArr[correctAnswer] + randomize(numberOfImages);
-			document.querySelector('.image').setAttribute('src', data[correctAnswerImage].image)
+			document.querySelector('.image').setAttribute('src', data[correctAnswerImage].image);
 
 			// 3 RANDOM CONTINENTS CHOICE FOR ANSWERS FIELD
 
@@ -58,12 +58,15 @@ function requestQuestion() {
 				string += "<li class='answer'>" + el.continent + "</li>";
 			}
 			answers.innerHTML = string;
+			setTimeout(() => {
+				document.querySelector('.app-body').classList.add('loaded');
+			}, 300);
 		}
 	}
 	request.send();
 }
 
-requestQuestion()
+requestQuestion();
 
 // ANSWER CLICK EVENT
 
@@ -75,12 +78,14 @@ document.querySelector('.answers').addEventListener('click', function(e){
 			i++;
 			el = el.previousElementSibling;
 		}
+		e.target.classList.add('selected');
 		if ( i == correctAnswer ) {
-			result += pointsGained
-			console.log(result)
+			result += pointsGained;
+			// console.log(result)
 		} else {
-			console.log('neee')
+			e.target.classList.add('wrong');
 		}
+		document.getElementsByClassName('answer')[correctAnswer].classList.add('correct');
 	}
 	next.classList.add('conform');
 	clicked = true;
@@ -90,15 +95,28 @@ document.querySelector('.answers').addEventListener('click', function(e){
 // NEXT CLICK EVENT 
 
 next.addEventListener('click', function(){
-	clicked = false;
-	questionCount++;
-	document.querySelector('.current-qiestion').innerHTML = questionCount;
-	requestQuestion();
-	this.classList.remove('conform');
+	if ( questionCount < maxQuestions ) {
+		clicked = false;
+		questionCount++;
+		document.querySelector('.current-qiestion').innerHTML = questionCount;
+		requestQuestion();
+		this.classList.remove('conform');
+		document.querySelector('.app-body').classList.remove('loaded');
+	} else {
+		console.log('endgamee');
+		endGame();
+	}
+	
 });
 
+// ENDGAME FUNCTION
 
+function endGame() {
+	document.querySelector('.app-body').classList.remove('loaded');
+	setTimeout(()=>{
 
+	}, 300)
+}
 
 
 
