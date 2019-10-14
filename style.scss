@@ -299,6 +299,7 @@ ul {
 		}
 		&.selected {
 			background-color: $highlight-color;
+			color: $white;
 			&:before {
 				background: url(images/stars-white.svg) no-repeat center center;
 				background-size: cover;
