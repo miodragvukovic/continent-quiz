@@ -104,7 +104,7 @@ ul {
 		background-color: $link-color;
 		padding: 20px 30px;
 		color: $white;
-		border-radius: 10px;
+		border-radius: 20px;
 		border: none;
 		font-size: 1.8rem;
 		letter-spacing: 0.2rem;
@@ -153,15 +153,103 @@ ul {
 }
 
 .home {
-	.button-wrap button {
+	height: calc(100vh - 43px);
+	h2 {
+		margin: 0;
+	}
+	.button-wrap {
+		padding: 0 20px;
+		justify-content: flex-start;
+		button {
+			visibility: visible;
+			opacity: 1;
+		}
+		.home-button {
+			position: relative;
+			height: 65px;
+			width: 65px;
+			margin-right: 20px;
+			background-color: $info-color;
+			&:before {
+				content: '';
+				display: block;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				height: 30px;
+				width: 30px;
+				background: url(images/home.svg) no-repeat center center;
+				background-size: cover;
+			}
+		}
+		#start {
+			border: 2px solid $link-color;
+			color: $link-color;
+			background-color: $white;
+			padding-left: 60px;
+			position: relative;
+			&:before {
+				content: '';
+				display: block;
+				position: absolute;
+				left: 20px;
+				top: 50%;
+				transform: translateY(-50%);
+				height: 30px;
+				width: 30px;
+				opacity: 1;
+				background: url(images/stars.svg) no-repeat center center;
+				background-size: cover;
+			}
+		}
+	}
+}
+
+.scores {
+	padding: 20px;
+	li {
+		position: relative;
+		font-size: 2.6rem;
+		line-height: normal;
+		font-weight: 700;
+		padding: 30px 0 10px 80px;
 		color: $black;
-		visibility: visible;
-		opacity: 1;
+		&:before {
+			content: attr(data-date);
+			font-size: 1.2rem;
+			line-height: normal;
+			position: absolute;
+			left: 80px;
+			top: 15px;
+			color: $main-font-color;
+		}
+	}
+	span {
+		position: absolute;
+		height: 50px;
+		width: 50px;
+		top: 50%;
+		left:  6px;
+		color: $link-color;
+		transform: translateY(-50%);
+		border-radius: 15px;
+		border: 2px solid $link-color;
+		&:before {
+			content: '#';
+		}
 	}
 }
 
 .question {
-	// display: none;
+	display: none;
+	opacity: 0;
+	visibility: hidden;
+	transition: $default-transition;
+	&.started-app {
+		visibility: visible;
+		opacity: 1;
+	}
 }
 
 

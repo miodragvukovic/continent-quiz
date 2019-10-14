@@ -11,11 +11,18 @@
 	<body>
 		<div id="app">
 			<h1>continent quiz</h1>
-			<!-- <div class="home">
-				<div class="button-wrap flex justify-center vertical-center">
-					<button title="Start the Test" id="start">Start</button>
+			<div class="home flex column space-between">
+				<div>
+					<div class="info-text">
+						<h2>Your Scores</h2>
+					</div>
+					<ul class="scores"></ul>
 				</div>
-			</div> -->
+				<div class="button-wrap flex justify-center vertical-center">
+					<button title="Home" class="home-button"></button>
+					<button title="Start the Test" id="start">Play</button>
+				</div>
+			</div>
 			<div class="question">
 				<div class="info-text">
 					<h2>Question <span class="current-qiestion">1</span> of <span class="max-questions">5</span></h2>
@@ -24,11 +31,7 @@
 					<figure>
 						<img class="image" src="" alt="">
 					</figure>
-					<ul class="answers">
-						<li class="answer">Africa</li>
-						<li class="answer">South America</li>
-						<li class="answer">Australia</li>
-					</ul>
+					<ul class="answers"></ul>
 				</div>
 				<div class="button-wrap flex justify-center vertical-center">
 					<button title="Next Question" id="next">next</button>

@@ -1,6 +1,7 @@
 // GLOBAL VARIABLES
 
 let numOfQuestions = 3;
+let numOfScores = 3;
 let correctAnswer;
 // IF THE API ENDPOINTS WERE WELL GROUPED, THESE WOULD BE OBSOLETE, LOOPING TROUGH OBJECTS WOULD GIVE US MAX-VALUES
 let numberOfContinents = 7;
@@ -11,12 +12,36 @@ let questionCount = 1;
 let maxQuestions = 5;
 let pointsGained = 750;
 let clicked = false;
+let localArr = []
 let answers = document.querySelector('.answers');
 let url = "https://api.myjson.com/bins/a6da9";
 let next = document.querySelector('#next');
 const request = new XMLHttpRequest();
 
 document.querySelector('.max-questions').innerHTML = maxQuestions;
+
+// LOADING LOCAL STORAGE & COMPARISION
+
+window.onload = function(){
+	Object.keys(localStorage).forEach(function(key){
+	   let el = JSON.parse(localStorage.getItem(key))
+	   localArr.push(el)
+	});
+	localArr.sort((a,b) => (a.highscore < b.highscore) ? 1 : ((b.highscore < a.highscore) ? -1 : 0));
+	console.log(localArr)
+	let string = "";
+	if ( localArr.length > 0 ) {
+		for ( let i = 0; i < numOfScores; i++ ) {
+			string += "<li data-date='"+ localArr[i].time +"' class='score'>";
+			string += "<span class='flex justify-center vertical-center'>"+ (i + 1) +"</span>"
+			string += localArr[i].highscore + " pts"
+			string += "</li>";
+		}
+	} else {
+		string += "<h2>Sorry, currently there are no results to show.</h2>";
+	}
+	document.querySelector('.scores').innerHTML = string;
+};
 
 // RANDOM NUMBER FUNCTION 
 
@@ -66,7 +91,16 @@ function requestQuestion() {
 	request.send();
 }
 
-requestQuestion();
+document.querySelector('#start').addEventListener('click', function(){
+	requestQuestion();
+	document.querySelector('.home').style.display = "none";
+	setTimeout(() => {
+		document.querySelector('.question').style.display = "block";
+		document.querySelector('.question').classList.add('started-app');
+	}, 300)
+});
+
+
 
 // ANSWER CLICK EVENT
 
@@ -109,14 +143,21 @@ next.addEventListener('click', function(){
 	
 });
 
-// ENDGAME FUNCTION
-
 function endGame() {
 	document.querySelector('.app-body').classList.remove('loaded');
 	setTimeout(()=>{
 
-	}, 300)
+	}, 300);
+	let date = new Date();
+	let score = {
+		'time': 'on '+ date.getMonth() +'/' + date.getDate() + '/'+ date.getFullYear(),
+		'highscore': result
+	}
+	localStorage.setItem(date.getTime(), JSON.stringify(score));
 }
+
+
+
 
 
 
