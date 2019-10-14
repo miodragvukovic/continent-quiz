@@ -28,14 +28,16 @@ window.onload = function(){
 	   localArr.push(el)
 	});
 	localArr.sort((a,b) => (a.highscore < b.highscore) ? 1 : ((b.highscore < a.highscore) ? -1 : 0));
-	console.log(localArr)
+	
 	let string = "";
 	if ( localArr.length > 0 ) {
-		for ( let i = 0; i < numOfScores; i++ ) {
-			string += "<li data-date='"+ localArr[i].time +"' class='score'>";
-			string += "<span class='flex justify-center vertical-center'>"+ (i + 1) +"</span>"
-			string += localArr[i].highscore + " pts"
-			string += "</li>";
+		for ( let i = 0; i < localArr.length; i++ ) {
+			if ( i < numOfScores ) {
+				string += "<li data-date='"+ localArr[i].time +"' class='score'>";
+				string += "<span class='flex justify-center vertical-center'>"+ (i + 1) +"</span>"
+				string += localArr[i].highscore + " pts"
+				string += "</li>";
+			}
 		}
 	} else {
 		string += "<h2>Sorry, currently there are no results to show.</h2>";
@@ -155,7 +157,6 @@ function endGame() {
 	}
 	localStorage.setItem(date.getTime(), JSON.stringify(score));
 }
-
 
 
 
