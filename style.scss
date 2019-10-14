@@ -189,8 +189,7 @@ ul {
 			background-color: $white;
 			padding-left: 60px;
 			position: relative;
-			&:before {
-				content: '';
+			svg {
 				display: block;
 				position: absolute;
 				left: 20px;
@@ -300,6 +299,10 @@ ul {
 		}
 		&.selected {
 			background-color: $highlight-color;
+			&:before {
+				background: url(images/stars-white.svg) no-repeat center center;
+				background-size: cover;
+			}
 		}
 		&.correct {
 			&:after {
@@ -318,7 +321,44 @@ ul {
 	}
 }
 
-
+.result-page {
+	display: none;
+	opacity: 0;
+	transition: $default-transition;
+	&.loaded {
+		opacity: 1;
+	}
+	.results-body {
+		h2, figure, h3 {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+		.info-text {
+			margin-bottom: 35px;
+		}
+	}
+	h3 {
+		font-size: 3.6rem;
+		line-height: normal;
+		color: $black;
+		letter-spacing: 0.3rem;
+		font-weight: 600;
+	}
+	button {
+		opacity: 1;
+		visibility: visible;
+		background-color: $white;
+		color: $info-color;
+		border: 2px solid $info-color;
+	}
+	figure {
+		height: 20vh;
+	}
+	svg {
+		height: 100%;
+		width: auto;
+	}
+}
 
 
 

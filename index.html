@@ -20,7 +20,9 @@
 				</div>
 				<div class="button-wrap flex justify-center vertical-center">
 					<button title="Home" class="home-button"></button>
-					<button title="Start the Test" id="start">Play</button>
+					<button title="Start the Test" id="start">
+					<svg width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="#098c50" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z"/></svg>
+					Play</button>
 				</div>
 			</div>
 			<div class="question">
@@ -35,6 +37,23 @@
 				</div>
 				<div class="button-wrap flex justify-center vertical-center">
 					<button title="Next Question" id="next">next</button>
+				</div>
+			</div>
+			<div class="result-page">
+				<div class="info-text">
+					<h2>Results</h2>
+				</div>
+				<div class="results-body flex column justify-center">
+					<figure>
+						<svg width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="#0051a5" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z"/></svg>
+					</figure>
+					<div class="info-text">
+						<h2>Your Score</h2>
+						<h3 id="result"></h3>
+					</div>
+					<div class="button-wrap flex justify-center vertical-center">
+						<button title="Finish test and go back to home page to preview results" id="finish">Finish</button>
+					</div>
 				</div>
 			</div>
 		</div>

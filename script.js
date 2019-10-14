@@ -18,17 +18,24 @@ let url = "https://api.myjson.com/bins/a6da9";
 let next = document.querySelector('#next');
 const request = new XMLHttpRequest();
 
-document.querySelector('.max-questions').innerHTML = maxQuestions;
-
-// LOADING LOCAL STORAGE & COMPARISION
+// ONLOAD EVENT
 
 window.onload = function(){
+	document.querySelector('.max-questions').innerHTML = maxQuestions;
+
+	// LOADING LOCAL STORAGE PUSHED INTO ARRAY
+
 	Object.keys(localStorage).forEach(function(key){
 	   let el = JSON.parse(localStorage.getItem(key))
 	   localArr.push(el)
 	});
+
+	// SORTING LOCAL STORAGE VALUES FROM HIGHEST TO LOWEST
+
 	localArr.sort((a,b) => (a.highscore < b.highscore) ? 1 : ((b.highscore < a.highscore) ? -1 : 0));
-	
+
+	// PRINTING RESULTS & NO RESULTS FOR HOMEPAGE
+
 	let string = "";
 	if ( localArr.length > 0 ) {
 		for ( let i = 0; i < localArr.length; i++ ) {
@@ -85,6 +92,9 @@ function requestQuestion() {
 				string += "<li class='answer'>" + el.continent + "</li>";
 			}
 			answers.innerHTML = string;
+
+			// SMALL DELAY TO PROVIDE ANIMATION BETWEEN QUESTIONS
+
 			setTimeout(() => {
 				document.querySelector('.app-body').classList.add('loaded');
 			}, 300);
@@ -92,6 +102,8 @@ function requestQuestion() {
 	}
 	request.send();
 }
+
+// START GAME EVENT
 
 document.querySelector('#start').addEventListener('click', function(){
 	requestQuestion();
@@ -102,29 +114,39 @@ document.querySelector('#start').addEventListener('click', function(){
 	}, 300)
 });
 
-
-
 // ANSWER CLICK EVENT
 
 document.querySelector('.answers').addEventListener('click', function(e){
 	let i = 0;
 	let el = e.target;
-	if ( !clicked ) {
+
+	if ( !clicked && e.target.classList.contains('answer') ) {
+		// LOOP THROUGH PREVIOUS ELEMENTS ( LOGIC )
+
 		while ( el.previousElementSibling !== null ) {
 			i++;
 			el = el.previousElementSibling;
 		}
 		e.target.classList.add('selected');
-		if ( i == correctAnswer ) {
-			result += pointsGained;
-			// console.log(result)
-		} else {
-			e.target.classList.add('wrong');
-		}
+
+		// RIGHT / WRONG ANSWER CONDITION
+
+		i == correctAnswer ? result += pointsGained : e.target.classList.add('wrong');
+
+		// CHANGE LAST BUTTON TEXT TO RESULTS INSTEAD OF NEXT
+
+		if ( questionCount == maxQuestions ) 
+			document.querySelector('#next').innerHTML = "result";
+
+		// HIGHLIGHT SELECTED ANSWER
+
 		document.getElementsByClassName('answer')[correctAnswer].classList.add('correct');
+
+		// HIGHLIGHT/SHOW BUTTONS
+
+		next.classList.add('conform');
+		clicked = true;
 	}
-	next.classList.add('conform');
-	clicked = true;
 
 });
 
@@ -139,16 +161,21 @@ next.addEventListener('click', function(){
 		this.classList.remove('conform');
 		document.querySelector('.app-body').classList.remove('loaded');
 	} else {
-		console.log('endgamee');
 		endGame();
+		document.querySelector('#result').innerHTML = result + " pts";
 	}
-	
 });
 
-function endGame() {
-	document.querySelector('.app-body').classList.remove('loaded');
-	setTimeout(()=>{
+// ENDGAME FUNCTION, LOCAL STORAGE REGISTRY
 
+function endGame() {
+	let question = document.querySelector('.question');
+	let resultPage = document.querySelector('.result-page');
+	question.classList.remove('started-app');
+	resultPage.style.display = "block";
+	setTimeout(()=>{
+		question.style.display = "none";
+		resultPage.classList.add('loaded');
 	}, 300);
 	let date = new Date();
 	let score = {
@@ -158,7 +185,11 @@ function endGame() {
 	localStorage.setItem(date.getTime(), JSON.stringify(score));
 }
 
+// FINISH BUTTON LISTENER
 
+document.querySelector('#finish').addEventListener('click', function(){
+	window.location.reload();
+});
 
 
 
