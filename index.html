@@ -9,14 +9,16 @@
 		<title>Test</title>
 	</head>
 	<body>
-		<div class="app">
+		<div id="app">
 			<div class="home"></div>
 			<div class="question">
-				<h1>continent quiz</h1>
-				<h2>Question <span class="current-qiestion">1</span> of <span class="max-questions">5</span></h2>
+				<div class="info-text">
+					<h1>continent quiz</h1>
+					<h2>Question <span class="current-qiestion">1</span> of <span class="max-questions">5</span></h2>
+				</div>
 				<div class="app-body">
 					<figure>
-						<img class="image" src="img.png" alt="">
+						<img class="image" src="" alt="">
 					</figure>
 					<ul class="answers">
 						<li class="answer">Africa</li>
@@ -24,7 +26,9 @@
 						<li class="answer">Australia</li>
 					</ul>
 				</div>
-				<button id="request-next-question">next</button>
+				<div class="button-wrap flex justify-center vertical-center">
+					<button id="request-next-question">next</button>
+				</div>
 			</div>
 		</div>
 	<script src="script.js"></script>

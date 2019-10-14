@@ -1,12 +1,22 @@
 // GLOBAL VARIABLES
 
 let numOfQuestions = 3;
-let numArr = [];
 let correctAnswer;
-// IF THE API WAS WELL GROUPED, THESE WOULD BE OBSOLETE...
+// IF THE API ENDPOINTS WERE WELL GROUPED, THESE WOULD BE OBSOLETE, LOOPING TROUGH OBJECTS WOULD GIVE US MAX-VALUES
 let numberOfContinents = 7;
 let numberOfImages = 5;
+//
+let result = 0;
+let questionCount = 1;
+let maxQuestions = 5;
+let pointsGained = 750;
+let clicked = false;
 let answers = document.querySelector('.answers');
+let url = "https://api.myjson.com/bins/a6da9";
+let next = document.querySelector('#request-next-question');
+const request = new XMLHttpRequest();
+
+document.querySelector('.max-questions').innerHTML = maxQuestions;
 
 // RANDOM NUMBER FUNCTION 
 
@@ -14,47 +24,82 @@ function randomize(param) {
 	return Math.floor(Math.random() * param);
 }
 
+// MAIN QUESTION REQUEST
 
-// ARRAY OF RADOM NUMBERS FUNCTION
+function requestQuestion() {
+	request.open('get', url, true);
 
-function generateUniqueNumbers(max) {
-	while ( numArr.length < numOfQuestions ) {
-	    var num = Math.floor(Math.random() * max);
-	    if ( numArr.indexOf(num) === -1 )
-	    	numArr.push(num);
-	}
-}
+	request.onreadystatechange = function() {
 
-// MAIN API REQUEST
+		if ( request.readyState == 4 && request.status == 200 ) {
+			let data = JSON.parse(request.responseText);
+			let string = "";
 
-const request = new XMLHttpRequest();
-var url = "https://api.myjson.com/bins/a6da9";
-request.open('get', url, true);
-request.onreadystatechange = function() {
-	if ( request.readyState == 4 && request.status == 200 ) {
-		let data = JSON.parse(request.responseText);
-		let string = "";
-		generateUniqueNumbers(numberOfContinents);
-		let arrIndex = (numArr.map(x => x * numberOfImages)).reverse();
+			// GENERATE ARRAY OF RANDOM NUMBERS
 
-		// RANDOM CORRECT ANSWER CHOICE
+			var numArr = [];
+			while ( numArr.length < numOfQuestions ) {
+			    var num = Math.floor(Math.random() * numberOfContinents);
+			    if ( numArr.indexOf(num) === -1 )
+			    	numArr.push(num);
+			}
+			numArr = (numArr.map(x => x * numberOfImages)).reverse();
 
-		correctAnswer = randomize(numOfQuestions);
-		console.log(correctAnswer)
-		let correctAnswerImage = arrIndex[correctAnswer] + randomize(numberOfImages);
-		document.querySelector('.image').setAttribute('src', data[correctAnswerImage].image)
+			// RANDOM CORRECT ANSWER CHOICE
 
-		console.log(correctAnswerImage)
+			correctAnswer = randomize(numOfQuestions);
+			let correctAnswerImage = numArr[correctAnswer] + randomize(numberOfImages);
+			document.querySelector('.image').setAttribute('src', data[correctAnswerImage].image)
 
-		// 3 RANDOM CONTINENTS CHOICE FOR ANSWERS FIELD
+			// 3 RANDOM CONTINENTS CHOICE FOR ANSWERS FIELD
 
-		console.log(arrIndex)
-		for ( let i = 0; i < arrIndex.length; i++ ) {
-			let el = data[arrIndex[i]];
-			string += "<li>" + el.continent + "</li>";
-
+			for ( let i = 0; i < numArr.length; i++ ) {
+				let el = data[numArr[i]];
+				string += "<li class='answer'>" + el.continent + "</li>";
+			}
+			answers.innerHTML = string;
 		}
-		answers.innerHTML = string;
 	}
+	request.send();
 }
-request.send()
+
+requestQuestion()
+
+// ANSWER CLICK EVENT
+
+document.querySelector('.answers').addEventListener('click', function(e){
+	let i = 0;
+	let el = e.target;
+	if ( !clicked ) {
+		while ( el.previousElementSibling !== null ) {
+			i++;
+			el = el.previousElementSibling;
+		}
+		if ( i == correctAnswer ) {
+			result += pointsGained
+			console.log(result)
+		} else {
+			console.log('neee')
+		}
+	}
+	next.classList.add('conform');
+	clicked = true;
+
+});
+
+// NEXT CLICK EVENT 
+
+next.addEventListener('click', function(){
+	clicked = false;
+	questionCount++;
+	document.querySelector('.current-qiestion').innerHTML = questionCount;
+	requestQuestion();
+	this.classList.remove('conform');
+});
+
+
+
+
+
+
+

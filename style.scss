@@ -2,13 +2,10 @@
 
 $white: #fff;
 $black: #000;
-$main-font-color: #282828;
-$main-color: #2c3d3b;
-$secondary-font-color: #2b67f5;
-$highlight-color: #2afc86;
-$link-color: #616161;
-$info-color: #05ce6b;
-$box-color: #f7f7f7;
+$main-font-color: #959595;
+$highlight-color: #feb63e;
+$link-color: #098c50;
+$info-color: #0051a5;
 $main-font: 'Muli', sans-serif;
 $default-transition: 0.3s ease-out;
 $lg: 1024px;
@@ -39,23 +36,23 @@ body {
 }
 
 h1, h2, h3, h4, p {
-	margin-bottom: 20px;
+	margin-bottom: 5px;
 }
 
 h1 {
-	font-size: 4.2rem;
-	line-height: 5.2rem;
-	font-weight: 900;
+	font-size: 2rem;
+	line-height: 2.6rem;
+	text-transform: uppercase;
 	@media (max-width: $sm) {
-		font-size: 3.2rem;
-		line-height: 3.7rem;
+		font-size: 1.4rem;
+		line-height: 1.8rem;
 	}
 }
 
 h2 {
 	font-size: 3.4rem;
 	line-height: 4.2rem;
-	font-weight: 900;
+	margin-bottom: 20px;
 	@media (max-width: $sm) {
 		font-size: 2.6rem;
 		line-height: 3rem;
@@ -93,17 +90,6 @@ b {
 
 ul {
 	list-style: none;
-	margin: 0 0 20px 15px;
-}
-
-section {
-	padding: 50px 0;
-	position: relative;
-	overflow-y: hidden;
-}
-
-p a {
-	color: $info-color;
 }
 
 
@@ -117,33 +103,6 @@ p a {
 	margin: 0 auto;
 }
 
-.uppercase {
-	text-transform: uppercase;
-}
-
-.bold {
-	font-weight: 700;
-}
-
-.has-before {
-	&:before {
-		content: '';
-		position: absolute;
-	}
-}
-.has-after {
-	&:after {
-		content: '';
-		position: absolute;
-	}
-}
-.has-both {
-	&:before,
-	&:after {
-		content: '';
-		position: absolute;
-	}
-}
 
 // GRID CLASSES
 
@@ -167,36 +126,52 @@ p a {
 	&.flex-end {
 		justify-content: flex-end;
 	}
-	@media (max-width: $lg) {
-		&.lg-column {
-			flex-direction: column;
-		}
+}
+
+#app {
+	padding: 20px 0;
+	min-height: 100vh;
+}
+
+.info-text {
+	padding: 0 20px;
+}
+
+.answers {
+	padding: 20px;
+	margin: 0;
+	li {
+		margin-bottom: 10px;
+		padding: 15px 20px;
+		border: 2px solid $highlight-color;
+		border-radius: 10px;
+		color: $black;
 	}
-	@media (max-width: $md) {
-		&.md-column {
-			flex-direction: column;
+}
+
+.button-wrap {
+	margin-bottom: 30px;
+	button {
+		visibility: hidden;
+		opacity: 0;
+		text-transform: uppercase;
+		background-color: $link-color;
+		padding: 20px 30px;
+		color: $white;
+		border-radius: 10px;
+		border: none;
+		font-size: 1.8rem;
+		letter-spacing: 0.2rem;
+		transition: $default-transition;
+		&.conform {
+			visibility: visible;
+			opacity: 1;
 		}
 	}
 }
 
-.col-50 {
-	width: calc(50% - 10px);
-	margin-right: 20px;
-	&:nth-child(even) {
-		margin-right: 0;
-	}
-	@media (max-width: $lg) {
-		width: 100%;
-		margin-right: 0;
-		margin-bottom: 35px;
-	}
-}
 
-.col-30 {
-	width: calc(33.333% - 14px);
-	margin-right: 20px;
-	&:nth-child(3n) {
-		margin-right: 0;
-	}
-}
+
+
+
 
