@@ -1,23 +1,23 @@
 // GLOBAL VARIABLES
 
-let numOfQuestions = 3;
-let numOfScores = 3;
+const numOfQuestions = 3;
+const numOfScores = 3;
+const pointsGained = 750;
+const maxQuestions = 5;
 let correctAnswer;
 let result = 0;
 let questionCount = 1;
-let maxQuestions = 5;
-let pointsGained = 750;
 let clicked = false;
 let localArr = [];
 
 // ELEMENT SELECTORS
-let answersEl = document.querySelector('.answers');
-let questionEl = document.querySelector('.question');
-let nextEl = document.querySelector('#next');
+const answersEl = document.querySelector('.answers');
+const questionEl = document.querySelector('.question');
+const nextEl = document.querySelector('#next');
 
 // AJAX-RELATED VARIABLES
 
-let url = "https://api.myjson.com/bins/a6da9";
+const url = "https://api.myjson.com/bins/a6da9";
 const request = new XMLHttpRequest();
 
 
@@ -211,7 +211,7 @@ nextEl.addEventListener('click', function(){
 // ENDGAME FUNCTION, LOCAL STORAGE REGISTRY
 
 function endGame() {
-	let resultPage = document.querySelector('.result-page');
+	const resultPage = document.querySelector('.result-page');
 	questionEl.classList.remove('started-app');
 	resultPage.style.display = "block";
 	setTimeout(()=>{
