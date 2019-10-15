@@ -8,13 +8,14 @@ let questionCount = 1;
 let maxQuestions = 5;
 let pointsGained = 750;
 let clicked = false;
-let localArr = []
+let localArr = [];
 
 // ELEMENT SELECTORS
 let answersEl = document.querySelector('.answers');
 let questionEl = document.querySelector('.question');
 let nextEl = document.querySelector('#next');
 
+// AJAX-RELATED VARIABLES
 
 let url = "https://api.myjson.com/bins/a6da9";
 const request = new XMLHttpRequest();
@@ -25,7 +26,7 @@ const request = new XMLHttpRequest();
 window.onload = function(){
 	document.querySelector('.max-questions').innerHTML = maxQuestions;
 
-	// LOADING LOCAL STORAGE PUSHED INTO ARRAY
+	// LOADED LOCAL STORAGE PUSHED INTO ARRAY
 
 	Object.keys(localStorage).forEach(function(key){
 	   let el = JSON.parse(localStorage.getItem(key))
@@ -36,15 +37,15 @@ window.onload = function(){
 
 	localArr.sort((a,b) => (a.highscore < b.highscore) ? 1 : ((b.highscore < a.highscore) ? -1 : 0));
 
-	// PRINTING RESULTS & NO RESULTS FOR HOMEPAGE
+	// PRINTING RESULTS OR NO RESULTS FOR HOMEPAGE
 
 	let string = "";
 	if ( localArr.length > 0 ) {
 		for ( let i = 0; i < localArr.length; i++ ) {
 			if ( i < numOfScores ) {
 				string += "<li data-date='"+ localArr[i].time +"' class='score'>";
-				string += "<span class='flex justify-center vertical-center'>"+ (i + 1) +"</span>"
-				string += localArr[i].highscore + " pts"
+				string += "<span class='flex justify-center vertical-center'>"+ (i + 1) +"</span>";
+				string += localArr[i].highscore + " pts";
 				string += "</li>";
 			}
 		}
@@ -123,6 +124,9 @@ function requestQuestion() {
 				document.querySelector('.app-body').classList.add('loaded');
 			}, 400);
 		}
+	}
+	request.onerror = function() {
+		alert('An error occured while loading page.');
 	}
 	request.send();
 }
