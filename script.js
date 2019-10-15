@@ -72,9 +72,14 @@ function requestQuestion() {
 
 		if ( request.readyState == 4 && request.status == 200 ) {
 
-			// SCOPE VARIABLES
-
 			let data = JSON.parse(request.responseText);
+
+			// SORT DATA ASCENDING IN CASE ORDER OF OBJECTS IN API CHANGES
+
+			data.sort((a,b) => (a.continent > b.continent) ? 1 : ((b.continent > a.continent) ? -1 : 0));
+
+			// SCOPE VARIABLES
+			
 			let string = "";
 			let continents = [[]];
 			let z = 0;
