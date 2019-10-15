@@ -1,30 +1,42 @@
 // GLOBAL VARIABLES
 
-const numOfQuestions = 3;
-const numOfScores = 3;
-const pointsGained = 750;
-const maxQuestions = 5;
-let correctAnswer;
-let result = 0;
-let questionCount = 1;
-let clicked = false;
-let localArr = [];
+const numOfQuestions = 3,
+	numOfScores = 3,
+	pointsGained = 750,
+	maxQuestions = 5;
+
+let correctAnswer,
+	result = 0,
+	questionCount = 1,
+	clicked = false,
+	localArr = [];
 
 // ELEMENT SELECTORS
-const answersEl = document.querySelector('.answers');
-const questionEl = document.querySelector('.question');
-const nextEl = document.querySelector('#next');
+
+const answersEl = document.querySelector('.answers'),
+	questionEl = document.querySelector('.question'),
+	nextEl = document.querySelector('#next');
 
 // AJAX-RELATED VARIABLES
 
-const url = "https://api.myjson.com/bins/a6da9";
-const request = new XMLHttpRequest();
+const url = "https://api.myjson.com/bins/a6da9",
+	request = new XMLHttpRequest();
 
+// RANDOM NUMBER FUNCTION 
+
+function randomize(param) {
+	return Math.floor(Math.random() * param);
+}
+
+// COMMA SEPARATOR FUNCTION FOR THOUSANDS
+
+function separateNum(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 // ONLOAD EVENT
 
 window.onload = function(){
-	document.querySelector('.max-questions').innerHTML = maxQuestions;
 
 	// LOADED LOCAL STORAGE PUSHED INTO ARRAY
 
@@ -46,7 +58,7 @@ window.onload = function(){
 			if ( i < numOfScores ) {
 				string += "<li data-date='"+ localArr[i].time +"' class='score'>";
 				string += "<span class='flex justify-center vertical-center'>"+ (i + 1) +"</span>";
-				string += localArr[i].highscore + " pts";
+				string += separateNum(localArr[i].highscore) + " pts";
 				string += "</li>";
 			}
 		}
@@ -56,14 +68,6 @@ window.onload = function(){
 	}
 	document.querySelector('.scores').innerHTML = string;
 };
-
-
-// RANDOM NUMBER FUNCTION 
-
-function randomize(param) {
-	return Math.floor(Math.random() * param);
-}
-
 
 // MAIN QUESTION REQUEST
 
@@ -82,10 +86,10 @@ function requestQuestion() {
 
 			// SCOPE VARIABLES
 
-			let string = "";
-			let continents = [[]];
-			let z = 0;
-			let currentContinent = data[0];
+			let string = "",
+				continents = [[]],
+				z = 0,
+				currentContinent = data[0];
 
 			// RE-GROUPING RECIEVED DATA FOR EASIER HANDLING
 
@@ -97,7 +101,6 @@ function requestQuestion() {
 				} else {
 					continents[z].push(data[i]);
 				}
-
 			}
 
 			// UNIQUE SET OF NUMBERS LIMITED BY NUMBER OF ANSWERS
@@ -141,18 +144,27 @@ function requestQuestion() {
 	request.send();
 }
 
-
 // START GAME EVENT
 
 document.querySelector('#start').addEventListener('click', function(){
+
+	// CURRENT AND MAX AMOUNT OF QUESTIONS ADDED
+
+	document.querySelector('.current-qiestion').innerHTML = questionCount;
+	document.querySelector('.max-questions').innerHTML = maxQuestions;
+
+	// REQUEST QUESTION ON START
+
 	requestQuestion();
+
+	// HIDE HOME PAGE AND DISPLAY QUESTIONS LAYOUT
+
 	document.querySelector('.home').style.display = "none";
 	setTimeout(() => {
 		questionEl.style.display = "block";
 		questionEl.classList.add('started-app');
 	}, 300);
 });
-
 
 // ANSWER CLICK EVENT
 
@@ -161,6 +173,7 @@ answersEl.addEventListener('click', function(e){
 	let el = e.target;
 
 	if ( !clicked && e.target.classList.contains('answer') ) {
+
 		// LOOP THROUGH PREVIOUS ELEMENTS ( LOGIC )
 
 		while ( el.previousElementSibling !== null ) {
@@ -190,28 +203,38 @@ answersEl.addEventListener('click', function(e){
 
 });
 
-
 // NEXT CLICK EVENT 
 
 nextEl.addEventListener('click', function(){
+
+	// CONDITION TO ASK FOR NEXT QUESTION WHILE ITS LESS THAN MAX AMOUNT OF QUESTIONS
+
 	if ( questionCount < maxQuestions ) {
 		clicked = false;
 		questionCount++;
 		document.querySelector('.current-qiestion').innerHTML = questionCount;
+
+		// REQUEST NEXT QUESTION
+
 		requestQuestion();
 		this.classList.remove('conform');
 		document.querySelector('.app-body').classList.remove('loaded');
 	} else {
+
+		// ASK FOR ENDGAME FUNCTION AND DISPLAY USER SCORE
+
 		endGame();
-		document.querySelector('#result').innerHTML = result + " pts";
+		document.querySelector('#result').innerHTML = separateNum(result) + " pts";
 	}
 });
-
 
 // ENDGAME FUNCTION, LOCAL STORAGE REGISTRY
 
 function endGame() {
 	const resultPage = document.querySelector('.result-page');
+
+	// HIDE QUESTIONS PAGE AND DISPLAY RESULT PAGE ( WITH SMALL DELAY, TO ANIMATE )
+
 	questionEl.classList.remove('started-app');
 	resultPage.style.display = "block";
 	setTimeout(()=>{
@@ -228,7 +251,6 @@ function endGame() {
 	}
 	localStorage.setItem(date.getTime(), JSON.stringify(score));
 }
-
 
 // FINISH AND HOME BUTTON LISTENER
 

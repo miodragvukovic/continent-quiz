@@ -30,6 +30,7 @@ body {
 	line-height: normal;
 	color: $main-font-color;
 	font-family: $main-font;
+	font-weight: 400;
 	@media (max-width: $sm) {
 		font-size: 1.4rem;
 	}
@@ -62,7 +63,7 @@ h2 {
 h3 {
 	font-size: 2rem;
 	line-height: 2.6rem;
-	font-weight: 900;
+	font-weight: 700;
 	margin-bottom: 10px;
 	@media (max-width: $sm) {
 		font-size: 3.6rem;

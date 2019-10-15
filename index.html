@@ -4,13 +4,16 @@
 		<meta charset="utf-8">
 		<meta name="Description" content="Test website">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link href="https://fonts.googleapis.com/css?family=Muli:400,700,900&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Muli:400,700&display=swap" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<title>Test</title>
 	</head>
 	<body>
 		<div id="app">
-			<h1>continent quiz</h1>
+			<h1>Continent Quiz</h1>
+
+			<!-- HOME COMPONENT LAYOUT -->
+
 			<div class="home flex column space-between">
 				<div>
 					<div class="info-text">
@@ -25,9 +28,14 @@
 					Play</button>
 				</div>
 			</div>
+
+			<!-- END OF HOME COMPONENT LAYOUT -->
+
+			<!-- QUESTION COMPONENT LAYOUT -->
+
 			<div class="question">
 				<div class="info-text">
-					<h2>Question <span class="current-qiestion">1</span> of <span class="max-questions">5</span></h2>
+					<h2>Question <span class="current-qiestion"></span> of <span class="max-questions"></span></h2>
 				</div>
 				<div class="app-body">
 					<figure>
@@ -39,6 +47,11 @@
 					<button title="Next Question" id="next">next</button>
 				</div>
 			</div>
+
+			<!-- END OF QUESTION COMPONENT LAYOUT -->
+
+			<!-- RESULT COMPONENT LAYOUT -->
+
 			<div class="result-page">
 				<div class="info-text">
 					<h2>Results</h2>
@@ -56,6 +69,9 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- END OF RESULT COMPONENT LAYOUT -->
+
 		</div>
 	<script src="script.js"></script>
 	</body>
