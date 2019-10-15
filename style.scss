@@ -88,6 +88,13 @@ ul {
 	list-style: none;
 }
 
+button, .answers li {
+	transition: $default-transition;
+	&:active {
+		transform: scale(0.95);
+	}
+}
+
 
 // HELPER CLASSES
 
