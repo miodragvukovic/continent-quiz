@@ -41,6 +41,7 @@ window.onload = function(){
 
 	let string = "";
 	if ( localArr.length > 0 ) {
+		string += "<ul>";
 		for ( let i = 0; i < localArr.length; i++ ) {
 			if ( i < numOfScores ) {
 				string += "<li data-date='"+ localArr[i].time +"' class='score'>";
@@ -49,6 +50,7 @@ window.onload = function(){
 				string += "</li>";
 			}
 		}
+		string += "</ul>";
 	} else {
 		string += "<h2>Currently there are no results to show, would you like to start the game?<br>Click the button below.</h2>";
 	}
@@ -79,7 +81,7 @@ function requestQuestion() {
 			data.sort((a,b) => (a.continent > b.continent) ? 1 : ((b.continent > a.continent) ? -1 : 0));
 
 			// SCOPE VARIABLES
-			
+
 			let string = "";
 			let continents = [[]];
 			let z = 0;
