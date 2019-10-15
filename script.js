@@ -29,8 +29,8 @@ window.onload = function(){
 	// LOADED LOCAL STORAGE PUSHED INTO ARRAY
 
 	Object.keys(localStorage).forEach(function(key){
-	   let el = JSON.parse(localStorage.getItem(key))
-	   localArr.push(el)
+	   let el = JSON.parse(localStorage.getItem(key));
+	   localArr.push(el);
 	});
 
 	// SORTING LOCAL STORAGE VALUES FROM HIGHEST TO LOWEST
@@ -76,19 +76,19 @@ function requestQuestion() {
 
 			let data = JSON.parse(request.responseText);
 			let string = "";
-			let continents = [[]]
+			let continents = [[]];
 			let z = 0;
-			let currentContinent = data[0]
+			let currentContinent = data[0];
 
 			// RE-GROUPING RECIEVED DATA FOR EASIER HANDLING
 
 			for ( let i = 0; i < data.length; i++ ) {
 				if ( currentContinent.continent != data[i].continent ) {
-					z++
-					continents.push([data[i]])
-					currentContinent = data[i]
+					z++;
+					continents.push([data[i]]);
+					currentContinent = data[i];
 				} else {
-					continents[z].push(data[i])
+					continents[z].push(data[i]);
 				}
 
 			}
@@ -105,15 +105,15 @@ function requestQuestion() {
 			// GENERATING CORRECT ANSWER AND LOOPING FOR RANDOM IMAGE
 
 			correctAnswer = randomize(numArr.length);
-			let correctAnswerImage = continents[numArr[correctAnswer]]
-			correctAnswerImage = correctAnswerImage[randomize(correctAnswerImage.length)].image
+			let correctAnswerImage = continents[numArr[correctAnswer]];
+			correctAnswerImage = correctAnswerImage[randomize(correctAnswerImage.length)].image;
 			document.querySelector('.image').setAttribute('src', correctAnswerImage);
 
 			// 3 RANDOM CONTINENTS CHOICE FOR ANSWERS FIELD
 
 			for ( let i = 0; i < numArr.length; i++ ) {
 				let el = continents[numArr[i]];
-				el = el[0].continent
+				el = el[0].continent;
 				string += "<li class='answer'>" + el + "</li>";
 			}
 			answersEl.innerHTML = string;
@@ -125,6 +125,9 @@ function requestQuestion() {
 			}, 400);
 		}
 	}
+
+	// ERROR HANDLING
+
 	request.onerror = function() {
 		alert('An error occured while loading page.');
 	}
@@ -140,7 +143,7 @@ document.querySelector('#start').addEventListener('click', function(){
 	setTimeout(() => {
 		questionEl.style.display = "block";
 		questionEl.classList.add('started-app');
-	}, 300)
+	}, 300);
 });
 
 
@@ -208,6 +211,9 @@ function endGame() {
 		questionEl.style.display = "none";
 		resultPage.classList.add('loaded');
 	}, 300);
+
+	// GROUPING TIME & SCORE FOR LOCAL STORAGE REGISTER
+
 	let date = new Date();
 	let score = {
 		'time': 'on '+ date.getMonth() +'/' + date.getDate() + '/'+ date.getFullYear(),

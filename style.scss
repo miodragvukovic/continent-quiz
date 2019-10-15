@@ -65,8 +65,8 @@ h3 {
 	font-weight: 900;
 	margin-bottom: 10px;
 	@media (max-width: $sm) {
-		font-size: 1.4rem;
-		line-height: 2rem;
+		font-size: 3.6rem;
+		line-height: normal;
 	}
 }
 
@@ -82,10 +82,6 @@ img {
 a:link,
 a:visited {
 	text-decoration: none;
-}
-
-b {
-	color: $link-color;
 }
 
 ul {
@@ -139,6 +135,8 @@ ul {
 		justify-content: flex-end;
 	}
 }
+
+// MAIN APP
 
 #app {
 	padding: 20px 0;
@@ -338,8 +336,6 @@ ul {
 		}
 	}
 	h3 {
-		font-size: 3.6rem;
-		line-height: normal;
 		color: $black;
 		letter-spacing: 0.3rem;
 		font-weight: 600;
