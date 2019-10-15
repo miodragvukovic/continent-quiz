@@ -3,20 +3,22 @@
 let numOfQuestions = 3;
 let numOfScores = 3;
 let correctAnswer;
-// IF THE API ENDPOINTS WERE WELL GROUPED, THESE WOULD BE OBSOLETE, LOOPING TROUGH OBJECTS WOULD GIVE US MAX-VALUES
-let numberOfContinents = 7;
-let numberOfImages = 5;
-//
 let result = 0;
 let questionCount = 1;
 let maxQuestions = 5;
 let pointsGained = 750;
 let clicked = false;
 let localArr = []
-let answers = document.querySelector('.answers');
+
+// ELEMENT SELECTORS
+let answersEl = document.querySelector('.answers');
+let questionEl = document.querySelector('.question');
+let nextEl = document.querySelector('#next');
+
+
 let url = "https://api.myjson.com/bins/a6da9";
-let next = document.querySelector('#next');
 const request = new XMLHttpRequest();
+
 
 // ONLOAD EVENT
 
@@ -47,16 +49,18 @@ window.onload = function(){
 			}
 		}
 	} else {
-		string += "<h2>Sorry, currently there are no results to show.</h2>";
+		string += "<h2>Currently there are no results to show, would you like to start the game?<br>Click the button below.</h2>";
 	}
 	document.querySelector('.scores').innerHTML = string;
 };
+
 
 // RANDOM NUMBER FUNCTION 
 
 function randomize(param) {
 	return Math.floor(Math.random() * param);
 }
+
 
 // MAIN QUESTION REQUEST
 
@@ -66,42 +70,63 @@ function requestQuestion() {
 	request.onreadystatechange = function() {
 
 		if ( request.readyState == 4 && request.status == 200 ) {
+
+			// SCOPE VARIABLES
+
 			let data = JSON.parse(request.responseText);
 			let string = "";
+			let continents = [[]]
+			let z = 0;
+			let currentContinent = data[0]
 
-			// GENERATE ARRAY OF RANDOM NUMBERS
+			// RE-GROUPING RECIEVED DATA FOR EASIER HANDLING
+
+			for ( let i = 0; i < data.length; i++ ) {
+				if ( currentContinent.continent != data[i].continent ) {
+					z++
+					continents.push([data[i]])
+					currentContinent = data[i]
+				} else {
+					continents[z].push(data[i])
+				}
+
+			}
+
+			// UNIQUE SET OF NUMBERS LIMITED BY NUMBER OF ANSWERS
 
 			var numArr = [];
 			while ( numArr.length < numOfQuestions ) {
-			    var num = Math.floor(Math.random() * numberOfContinents);
+			    var num = Math.floor(Math.random() * continents.length);
 			    if ( numArr.indexOf(num) === -1 )
 			    	numArr.push(num);
 			}
-			numArr = (numArr.map(x => x * numberOfImages)).reverse();
+			
+			// GENERATING CORRECT ANSWER AND LOOPING FOR RANDOM IMAGE
 
-			// RANDOM CORRECT ANSWER CHOICE
-
-			correctAnswer = randomize(numOfQuestions);
-			let correctAnswerImage = numArr[correctAnswer] + randomize(numberOfImages);
-			document.querySelector('.image').setAttribute('src', data[correctAnswerImage].image);
+			correctAnswer = randomize(numArr.length);
+			let correctAnswerImage = continents[numArr[correctAnswer]]
+			correctAnswerImage = correctAnswerImage[randomize(correctAnswerImage.length)].image
+			document.querySelector('.image').setAttribute('src', correctAnswerImage);
 
 			// 3 RANDOM CONTINENTS CHOICE FOR ANSWERS FIELD
 
 			for ( let i = 0; i < numArr.length; i++ ) {
-				let el = data[numArr[i]];
-				string += "<li class='answer'>" + el.continent + "</li>";
+				let el = continents[numArr[i]];
+				el = el[0].continent
+				string += "<li class='answer'>" + el + "</li>";
 			}
-			answers.innerHTML = string;
+			answersEl.innerHTML = string;
 
 			// SMALL DELAY TO PROVIDE ANIMATION BETWEEN QUESTIONS
 
 			setTimeout(() => {
 				document.querySelector('.app-body').classList.add('loaded');
-			}, 300);
+			}, 400);
 		}
 	}
 	request.send();
 }
+
 
 // START GAME EVENT
 
@@ -109,14 +134,15 @@ document.querySelector('#start').addEventListener('click', function(){
 	requestQuestion();
 	document.querySelector('.home').style.display = "none";
 	setTimeout(() => {
-		document.querySelector('.question').style.display = "block";
-		document.querySelector('.question').classList.add('started-app');
+		questionEl.style.display = "block";
+		questionEl.classList.add('started-app');
 	}, 300)
 });
 
+
 // ANSWER CLICK EVENT
 
-document.querySelector('.answers').addEventListener('click', function(e){
+answersEl.addEventListener('click', function(e){
 	let i = 0;
 	let el = e.target;
 
@@ -136,7 +162,7 @@ document.querySelector('.answers').addEventListener('click', function(e){
 		// CHANGE LAST BUTTON TEXT TO RESULTS INSTEAD OF NEXT
 
 		if ( questionCount == maxQuestions ) 
-			document.querySelector('#next').innerHTML = "result";
+			nextEl.innerHTML = "result";
 
 		// HIGHLIGHT SELECTED ANSWER
 
@@ -144,15 +170,16 @@ document.querySelector('.answers').addEventListener('click', function(e){
 
 		// HIGHLIGHT/SHOW BUTTONS
 
-		next.classList.add('conform');
+		nextEl.classList.add('conform');
 		clicked = true;
 	}
 
 });
 
+
 // NEXT CLICK EVENT 
 
-next.addEventListener('click', function(){
+nextEl.addEventListener('click', function(){
 	if ( questionCount < maxQuestions ) {
 		clicked = false;
 		questionCount++;
@@ -166,15 +193,15 @@ next.addEventListener('click', function(){
 	}
 });
 
+
 // ENDGAME FUNCTION, LOCAL STORAGE REGISTRY
 
 function endGame() {
-	let question = document.querySelector('.question');
 	let resultPage = document.querySelector('.result-page');
-	question.classList.remove('started-app');
+	questionEl.classList.remove('started-app');
 	resultPage.style.display = "block";
 	setTimeout(()=>{
-		question.style.display = "none";
+		questionEl.style.display = "none";
 		resultPage.classList.add('loaded');
 	}, 300);
 	let date = new Date();
@@ -185,11 +212,15 @@ function endGame() {
 	localStorage.setItem(date.getTime(), JSON.stringify(score));
 }
 
-// FINISH BUTTON LISTENER
 
-document.querySelector('#finish').addEventListener('click', function(){
-	window.location.reload();
-});
+// FINISH AND HOME BUTTON LISTENER
+
+for ( let el of document.getElementsByClassName('instant-refresh') ) {
+	el.addEventListener('click', function(){
+		window.location.reload();
+	});
+}
+
 
 
 
