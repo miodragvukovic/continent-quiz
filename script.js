@@ -231,8 +231,9 @@ nextEl.addEventListener('click', function(){
 		document.querySelector('.current-qiestion').innerHTML = questionCount;
 
 		// REQUEST NEXT QUESTION
-
-		requestQuestion();
+		setTimeout(() =>{
+			requestQuestion();
+		}, 300)
 		this.classList.remove('conform');
 		document.querySelector('.app-body').classList.remove('loaded');
 	} else {
