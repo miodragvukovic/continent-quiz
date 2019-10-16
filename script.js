@@ -9,6 +9,7 @@ let correctAnswer,
 	result = 0,
 	questionCount = 1,
 	clicked = false,
+	localData,
 	localArr = [];
 
 // ELEMENT SELECTORS
@@ -71,7 +72,8 @@ window.onload = function(){
 
 // MAIN QUESTION REQUEST
 
-function requestQuestion() {
+function gatherInfo() {
+
 	request.open('get', url, true);
 
 	request.onreadystatechange = function() {
@@ -86,53 +88,29 @@ function requestQuestion() {
 
 			// SCOPE VARIABLES
 
-			let string = "",
-				continents = [[]],
-				z = 0,
+			let continents = [[]],
+				arrayIndex = 0,
 				currentContinent = data[0];
 
 			// RE-GROUPING RECIEVED DATA FOR EASIER HANDLING
 
 			for ( let i = 0; i < data.length; i++ ) {
 				if ( currentContinent.continent != data[i].continent ) {
-					z++;
+					arrayIndex++;
 					continents.push([data[i]]);
 					currentContinent = data[i];
 				} else {
-					continents[z].push(data[i]);
+					continents[arrayIndex].push(data[i]);
 				}
 			}
 
-			// UNIQUE SET OF NUMBERS LIMITED BY NUMBER OF ANSWERS
+			// STORING AJAX RESPONSE DATA INTO LOCAL VARIABLE, TO PREVENT REQUEST ON EACH QUESTION
 
-			var numArr = [];
-			while ( numArr.length < numOfQuestions ) {
-			    var num = Math.floor(Math.random() * continents.length);
-			    if ( numArr.indexOf(num) === -1 )
-			    	numArr.push(num);
-			}
-			
-			// GENERATING CORRECT ANSWER AND LOOPING FOR RANDOM IMAGE
+			localData = continents;
 
-			correctAnswer = randomize(numArr.length);
-			let correctAnswerImage = continents[numArr[correctAnswer]];
-			correctAnswerImage = correctAnswerImage[randomize(correctAnswerImage.length)].image;
-			document.querySelector('.image').setAttribute('src', correctAnswerImage);
+			// REQUESING FIRST QUESTION
 
-			// 3 RANDOM CONTINENTS CHOICE FOR ANSWERS FIELD
-
-			for ( let i = 0; i < numArr.length; i++ ) {
-				let el = continents[numArr[i]];
-				el = el[0].continent;
-				string += "<li class='answer'>" + el + "</li>";
-			}
-			answersEl.innerHTML = string;
-
-			// SMALL DELAY TO PROVIDE ANIMATION BETWEEN QUESTIONS
-
-			setTimeout(() => {
-				document.querySelector('.app-body').classList.add('loaded');
-			}, 400);
+			requestQuestion();
 		}
 	}
 
@@ -142,6 +120,44 @@ function requestQuestion() {
 		alert('An error occured while loading page.');
 	}
 	request.send();
+}
+
+// 
+
+function requestQuestion() {
+
+	let string = "";
+
+	// UNIQUE SET OF NUMBERS LIMITED BY NUMBER OF ANSWERS
+
+	var numArr = [];
+	while ( numArr.length < numOfQuestions ) {
+	    var num = Math.floor(Math.random() * localData.length);
+	    if ( numArr.indexOf(num) === -1 )
+	    	numArr.push(num);
+	}
+	
+	// GENERATING CORRECT ANSWER AND LOOPING FOR RANDOM IMAGE
+
+	correctAnswer = randomize(numArr.length);
+	let correctAnswerImage = localData[numArr[correctAnswer]];
+	correctAnswerImage = correctAnswerImage[randomize(correctAnswerImage.length)].image;
+	document.querySelector('.image').setAttribute('src', correctAnswerImage);
+
+	// 3 RANDOM CONTINENTS CHOICE FOR ANSWERS FIELD
+
+	for ( let i = 0; i < numArr.length; i++ ) {
+		let el = localData[numArr[i]];
+		el = el[0].continent;
+		string += "<li class='answer'>" + el + "</li>";
+	}
+	answersEl.innerHTML = string;
+
+	// SMALL DELAY TO PROVIDE ANIMATION BETWEEN QUESTIONS
+
+	setTimeout(() => {
+		document.querySelector('.app-body').classList.add('loaded');
+	}, 400);
 }
 
 // START GAME EVENT
@@ -155,7 +171,7 @@ document.querySelector('#start').addEventListener('click', function(){
 
 	// REQUEST QUESTION ON START
 
-	requestQuestion();
+	gatherInfo();
 
 	// HIDE HOME PAGE AND DISPLAY QUESTIONS LAYOUT
 
