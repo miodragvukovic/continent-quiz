@@ -231,6 +231,7 @@ nextEl.addEventListener('click', function(){
 		document.querySelector('.current-qiestion').innerHTML = questionCount;
 
 		// REQUEST NEXT QUESTION
+		
 		setTimeout(() =>{
 			requestQuestion();
 		}, 300)
